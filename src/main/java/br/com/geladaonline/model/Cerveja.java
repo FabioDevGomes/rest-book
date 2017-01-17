@@ -1,5 +1,6 @@
 package br.com.geladaonline.model;
 
+
 public class Cerveja {
 
 	public Cerveja(String nome, String descricao, String cevejaria, Tipo tipo) {
@@ -23,5 +24,37 @@ public class Cerveja {
 	public String toString() {
 		return "Cerveja [nome=" + nome + ", descricao=" + descricao + ", cevejaria=" + cevejaria + ", tipo=" + tipo
 				+ "]";
+	}
+
+	public String getNome() {
+		return nome;
+	}
+
+	public void setNome(String nome) {
+		this.nome = nome;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public String getCevejaria() {
+		return cevejaria;
+	}
+
+	public void setCevejaria(String cevejaria) {
+		this.cevejaria = cevejaria;
+	}
+
+	public Tipo getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Tipo tipo) {
+		this.tipo = tipo;
 	}
 }
