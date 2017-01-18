@@ -1,9 +1,7 @@
 package br.com.geladaonline.servlets;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -54,7 +52,7 @@ public class CervejaServlet extends HttpServlet{
 	
 	private void escreveXML(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Cervejas cervejas = new Cervejas();
-		cervejas.setCervejas(new ArrayList<>(estoque.listarCervejas()));
+		cervejas.setCervejas(new ArrayList<Cerveja>(estoque.listarCervejas()));
 		
 		try {
 			resp.setContentType("application/xml;charset=UTF-8");
@@ -68,7 +66,7 @@ public class CervejaServlet extends HttpServlet{
 
 	private void escreveJSON(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Cervejas cervejas = new Cervejas();
-		cervejas.setCervejas(new ArrayList<>(estoque.listarCervejas()));
+		cervejas.setCervejas(new ArrayList<Cerveja>(estoque.listarCervejas()));
 		
 		try {
 			resp.setContentType("application/json;charset=UTF-8");
