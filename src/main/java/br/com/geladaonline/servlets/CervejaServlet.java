@@ -1,7 +1,10 @@
 package br.com.geladaonline.servlets;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,51 +25,60 @@ import br.com.geladaonline.model.rest.Cervejas;
 
 @SuppressWarnings("serial")
 @WebServlet(value = "/cervejas/*")
-public class CervejaServlet extends HttpServlet{
+public class CervejaServlet extends HttpServlet {
 
 	private static JAXBContext context;
 	private Estoque estoque = new Estoque();
-	
-	static{
+
+	static {
 		try {
-			context = JAXBContext.newInstance(Cervejas.class); 
+			context = JAXBContext.newInstance(Cervejas.class);
 		} catch (Exception e) {
 			throw new RuntimeException();
 		}
 	}
-	
-	
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String acceptHeader = req.getHeader("Accept");
-		
-		if (acceptHeader == null || acceptHeader.contains("application/xml")){
+
+		if (acceptHeader == null || acceptHeader.contains("application/xml")) {
 			escreveXML(req, resp);
-		} else if (acceptHeader.contains("application/json")){
+		} else if (acceptHeader.contains("application/json")) {
 			escreveJSON(req, resp);
 		} else {
-			//Formato não suportado
+			// Formato não suportado
 			resp.sendError(415);
 		}
 	}
-	
+
 	private void escreveXML(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Cervejas cervejas = new Cervejas();
-		cervejas.setCervejas(new ArrayList<Cerveja>(estoque.listarCervejas()));
-		
+		Object objetoAEscrever = localizaObjetoASerEnviado(req);
+
+		if (objetoAEscrever == null) {
+			// Objeto não encontrado
+			resp.sendError(404);
+			return;
+		}
+
 		try {
 			resp.setContentType("application/xml;charset=UTF-8");
 			Marshaller marshaller = context.createMarshaller();
-			marshaller.marshal(cervejas, resp.getWriter());
-			
+			marshaller.marshal(objetoAEscrever, resp.getWriter());
+
 		} catch (JAXBException e) {
 			resp.sendError(500, e.getMessage());
 		}
 	}
 
 	private void escreveJSON(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Cervejas cervejas = new Cervejas();
-		cervejas.setCervejas(new ArrayList<Cerveja>(estoque.listarCervejas()));
+		Object objetoAEscrever = localizaObjetoASerEnviado(req);
+
+		if (objetoAEscrever == null) {
+			// Objeto não encontrado
+			resp.sendError(404);
+			return;
+		}
 		
 		try {
 			resp.setContentType("application/json;charset=UTF-8");
@@ -75,11 +87,52 @@ public class CervejaServlet extends HttpServlet{
 			XMLStreamWriter xmlStreamWriter = new MappedXMLStreamWriter(con, resp.getWriter());
 
 			Marshaller marshaller = context.createMarshaller();
-			marshaller.marshal(cervejas, xmlStreamWriter);
-			
+			marshaller.marshal(objetoAEscrever, xmlStreamWriter);
+
 		} catch (JAXBException e) {
 			resp.sendError(500);
 		}
+	}
 
+	private String obtemIdentificador(HttpServletRequest req) throws RecursoSemIdentificadoException {
+		String requestURI = req.getRequestURI();
+		String[] pedacosDaURI = requestURI.split("/");
+
+		boolean contextoEncontrado = false;
+		for (String contexto : pedacosDaURI) {
+			if (contexto.equals("cervejas")) {
+				contextoEncontrado = true;
+				continue;
+			}
+
+			if (contextoEncontrado) {
+				try {
+					return URLDecoder.decode(contexto, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					return URLDecoder.decode(contexto);
+				}
+			}
+		}
+
+		throw new RecursoSemIdentificadoException("Recurso sem identificador, óbvio!!");
+
+	}
+
+	private Object localizaObjetoASerEnviado(HttpServletRequest req) {
+		Object objeto = null;
+		Cervejas cervejas = new Cervejas();
+
+		try {
+			String identificado = obtemIdentificador(req);
+			objeto = estoque.recuperaCervejaPeloNome(identificado);
+			List<Cerveja> cervejaEscolhida = new ArrayList<>();
+			cervejaEscolhida.add((Cerveja) objeto);
+			cervejas.setCervejas(cervejaEscolhida);
+		} catch (RecursoSemIdentificadoException e) {
+			cervejas.setCervejas(new ArrayList<>(estoque.listarCervejas()));
+		}
+		objeto = cervejas;
+
+		return objeto;
 	}
 }
