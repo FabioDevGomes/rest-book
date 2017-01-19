@@ -71,12 +71,15 @@ public class CervejaServlet extends HttpServlet{
 		try {
 			resp.setContentType("application/json;charset=UTF-8");
 			MappedNamespaceConvention con = new MappedNamespaceConvention();
+
 			XMLStreamWriter xmlStreamWriter = new MappedXMLStreamWriter(con, resp.getWriter());
+
 			Marshaller marshaller = context.createMarshaller();
 			marshaller.marshal(cervejas, xmlStreamWriter);
 			
 		} catch (JAXBException e) {
-			resp.sendError(500, e.getMessage());
+			resp.sendError(500);
 		}
+
 	}
 }
