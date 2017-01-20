@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 import javax.xml.stream.XMLStreamWriter;
 
 import org.codehaus.jettison.mapped.MappedNamespaceConvention;
@@ -36,6 +37,36 @@ public class CervejaServlet extends HttpServlet {
 		} catch (Exception e) {
 			throw new RuntimeException();
 		}
+	}
+
+	@Override
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		String identificador = null;
+		try {
+			identificador = obtemIdentificador(req);
+		} catch (RecursoSemIdentificadoException e) {
+			resp.sendError(400, e.getMessage());
+		}
+		
+		if(identificador != null && estoque.recuperaCervejaPeloNome(identificador) != null){
+			resp.sendError(500, "Cerveja já cadastrada");
+			return;
+		}
+		
+		try {
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+			Cerveja cerveja = (Cerveja) unmarshaller.unmarshal(req.getInputStream());
+			cerveja.setNome(identificador);
+			estoque.adicionarCerveja(cerveja);
+		} catch (JAXBException e) {
+			resp.sendError(500, e.getMessage());
+		}
+		
+		String requestURI = req.getRequestURI();
+		resp.setHeader("Location", requestURI);
+		resp.setStatus(201);
+		
+		escreveXML(req, resp);
 	}
 
 	@Override
@@ -79,7 +110,7 @@ public class CervejaServlet extends HttpServlet {
 			resp.sendError(404);
 			return;
 		}
-		
+
 		try {
 			resp.setContentType("application/json;charset=UTF-8");
 			MappedNamespaceConvention con = new MappedNamespaceConvention();
@@ -125,13 +156,16 @@ public class CervejaServlet extends HttpServlet {
 		try {
 			String identificado = obtemIdentificador(req);
 			objeto = estoque.recuperaCervejaPeloNome(identificado);
-			List<Cerveja> cervejaEscolhida = new ArrayList<>();
-			cervejaEscolhida.add((Cerveja) objeto);
-			cervejas.setCervejas(cervejaEscolhida);
+//			if (objeto != null) {
+//				List<Cerveja> cervejaEscolhida = new ArrayList<>();
+//				cervejaEscolhida.add((Cerveja) objeto);
+//				cervejas.setCervejas(cervejaEscolhida);
+//				objeto = cervejas;
+//			}
 		} catch (RecursoSemIdentificadoException e) {
 			cervejas.setCervejas(new ArrayList<>(estoque.listarCervejas()));
+			objeto = cervejas;
 		}
-		objeto = cervejas;
 
 		return objeto;
 	}
