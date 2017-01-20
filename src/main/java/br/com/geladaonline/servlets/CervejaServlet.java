@@ -156,12 +156,6 @@ public class CervejaServlet extends HttpServlet {
 		try {
 			String identificado = obtemIdentificador(req);
 			objeto = estoque.recuperaCervejaPeloNome(identificado);
-//			if (objeto != null) {
-//				List<Cerveja> cervejaEscolhida = new ArrayList<>();
-//				cervejaEscolhida.add((Cerveja) objeto);
-//				cervejas.setCervejas(cervejaEscolhida);
-//				objeto = cervejas;
-//			}
 		} catch (RecursoSemIdentificadoException e) {
 			cervejas.setCervejas(new ArrayList<>(estoque.listarCervejas()));
 			objeto = cervejas;
