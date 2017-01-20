@@ -15,9 +15,15 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.XMLStreamWriter;
 
+import org.apache.commons.io.IOUtils;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
 import org.codehaus.jettison.mapped.MappedNamespaceConvention;
+import org.codehaus.jettison.mapped.MappedXMLStreamReader;
 import org.codehaus.jettison.mapped.MappedXMLStreamWriter;
 
 import br.com.geladaonline.model.Cerveja;
@@ -42,31 +48,58 @@ public class CervejaServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String identificador = null;
+
 		try {
 			identificador = obtemIdentificador(req);
 		} catch (RecursoSemIdentificadoException e) {
 			resp.sendError(400, e.getMessage());
 		}
-		
-		if(identificador != null && estoque.recuperaCervejaPeloNome(identificador) != null){
+
+		if (identificador != null && estoque.recuperaCervejaPeloNome(identificador) != null) {
 			resp.sendError(500, "Cerveja já cadastrada");
 			return;
 		}
-		
+
 		try {
-			Unmarshaller unmarshaller = context.createUnmarshaller();
-			Cerveja cerveja = (Cerveja) unmarshaller.unmarshal(req.getInputStream());
-			cerveja.setNome(identificador);
-			estoque.adicionarCerveja(cerveja);
-		} catch (JAXBException e) {
+			String tipoDeConteudo = req.getContentType();
+			if (tipoDeConteudo.contains("text/xml") || tipoDeConteudo.contains("application/xml")) {
+
+				Unmarshaller unmarshaller = context.createUnmarshaller();
+				Cerveja cerveja = (Cerveja) unmarshaller.unmarshal(req.getInputStream());
+				cerveja.setNome(identificador);
+				estoque.adicionarCerveja(cerveja);
+				String requestURI = req.getRequestURI();
+				resp.setHeader("Location", requestURI);
+				resp.setStatus(201);
+
+				escreveXML(req, resp);
+
+			} else if (tipoDeConteudo.contains("application/json")) {
+				List<String> linhas = IOUtils.readLines(req.getInputStream());
+				StringBuilder json = new StringBuilder();
+				for (String linha : linhas) {
+					json.append(linha);
+				}
+
+				MappedNamespaceConvention con = new MappedNamespaceConvention();
+				JSONObject jsonObject = new JSONObject(json.toString());
+				XMLStreamReader xmlStreamReader = new MappedXMLStreamReader(jsonObject, con);
+
+				Unmarshaller unmarshaller = context.createUnmarshaller();
+				Cerveja cerveja = (Cerveja) unmarshaller.unmarshal(xmlStreamReader);
+				cerveja.setNome(identificador);
+				estoque.adicionarCerveja(cerveja);
+				String requestURI = req.getRequestURI();
+				resp.setHeader("Location", requestURI);
+				resp.setStatus(201);
+
+			} else {
+				resp.sendError(415, "Tipo de conteúdo não encontrado.");
+			}
+		} catch (Exception e) { 
 			resp.sendError(500, e.getMessage());
 		}
-		
-		String requestURI = req.getRequestURI();
-		resp.setHeader("Location", requestURI);
-		resp.setStatus(201);
-		
-		escreveXML(req, resp);
+
 	}
 
 	@Override
