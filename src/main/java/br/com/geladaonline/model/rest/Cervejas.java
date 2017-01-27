@@ -12,6 +12,15 @@ import br.com.geladaonline.model.Cerveja;
 public class Cervejas {
 
 	private List<Cerveja> cervejas = new ArrayList<>();
+	
+	public Cervejas(List<Cerveja> cervejas) {
+		super();
+		this.cervejas = cervejas;
+	}
+
+	public Cervejas() {
+		super();
+	}
 
 	@XmlElement(name="cerveja")
 	public List<Cerveja> getCervejas() {
@@ -21,7 +30,5 @@ public class Cervejas {
 	public void setCervejas(List<Cerveja> cervejas) {
 		this.cervejas = cervejas;
 	}
-	
-	
 	
 }

@@ -29,7 +29,7 @@ import br.com.geladaonline.model.Estoque;
 import br.com.geladaonline.model.rest.Cervejas;
 
 @SuppressWarnings("serial")
-@WebServlet(value = "/cervejas/*")
+@WebServlet(value = "/cervejasServlet/*")
 public class CervejaServlet extends HttpServlet {
 
 	private static JAXBContext context;

@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import br.com.geladaonline.model.Cerveja.Tipo;
+import br.com.geladaonline.services.CervejaJaExisteException;
 
 public class Estoque {
 	
@@ -22,7 +23,10 @@ public class Estoque {
 		return new ArrayList<>(this.cervejas.values());
 	}
 	
-	public void adicionarCerveja(Cerveja cerveja){
+	public void adicionarCerveja(Cerveja cerveja) throws CervejaJaExisteException{
+		if(cervejas.containsKey(cerveja.getNome())){
+			throw new CervejaJaExisteException();
+		}
 		cervejas.put(cerveja.getNome(), cerveja);
 	}
 
