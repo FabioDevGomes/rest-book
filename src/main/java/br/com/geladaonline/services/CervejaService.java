@@ -4,8 +4,10 @@ import java.net.URI;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -30,7 +32,6 @@ public class CervejaService {
 	public Cervejas listarTodasAsCervejas(){
 		List<Cerveja> cervejas = (List<Cerveja>) estoque.listarCervejas();
 		return new Cervejas(cervejas);
-				
 	}
 	
 	@GET
@@ -50,10 +51,32 @@ public class CervejaService {
 		} catch (CervejaJaExisteException e) {
 			throw new WebApplicationException(Status.CONFLICT);
 		}
-		
 		URI uri = UriBuilder.fromPath("cervejas/{nome}").build(cerveja.getNome());
 		
 		return Response.created(uri).entity(cerveja).build();
+	}
+	
+	@PUT
+	@Path("{nome}")
+	public void atualizarCerveja(@PathParam("nome")String nome, Cerveja cerveja){
+		try {
+			cerveja.setNome(nome); //nome da cerveja a ser alterada
+			estoque.atualizarCerveja(cerveja); //objeto recebido com os dados alterados
+		} catch (CervejaNaoEcontradaException e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Status.NOT_FOUND);
+		}
+	}
+	
+	@DELETE
+	@Path("{nome}")
+	public void apagarCerveja(@PathParam("nome")String nome){
+		try {
+			estoque.apagarCerveja(nome);
+		} catch (CervejaNaoEcontradaException e) {
+			e.printStackTrace();
+			throw new WebApplicationException(Status.NOT_FOUND);
+		} 
 	}
 
 }

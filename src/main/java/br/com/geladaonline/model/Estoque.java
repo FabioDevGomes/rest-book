@@ -7,6 +7,7 @@ import java.util.Map;
 
 import br.com.geladaonline.model.Cerveja.Tipo;
 import br.com.geladaonline.services.CervejaJaExisteException;
+import br.com.geladaonline.services.CervejaNaoEcontradaException;
 
 public class Estoque {
 	
@@ -32,6 +33,21 @@ public class Estoque {
 
 	public Cerveja recuperaCervejaPeloNome(String nome){
 		return cervejas.get(nome);
+	}
+	
+	public void atualizarCerveja(Cerveja cerveja) throws CervejaNaoEcontradaException{
+		if(!cervejas.containsKey(cerveja.getNome())){
+			throw new CervejaNaoEcontradaException();
+		}
+		cervejas.remove(cerveja.getNome());
+		cervejas.put(cerveja.getNome(), cerveja);
+	}
+	
+	public void apagarCerveja(String nome) throws CervejaNaoEcontradaException{
+		if(!cervejas.containsKey(nome)){
+			throw new CervejaNaoEcontradaException();
+		}
+		cervejas.remove(nome);
 	}
 	
 }
