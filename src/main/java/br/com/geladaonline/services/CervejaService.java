@@ -11,6 +11,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -27,10 +28,12 @@ import br.com.geladaonline.model.rest.Cervejas;
 public class CervejaService {
 	
 	private static Estoque estoque = new Estoque();
+	private static final int TAMANHO_PAGINA = 2;
 	
 	@GET
-	public Cervejas listarTodasAsCervejas(){
-		List<Cerveja> cervejas = (List<Cerveja>) estoque.listarCervejas();
+	public Cervejas listarTodasAsCervejas(@QueryParam("pagina") int pagina){
+		List<Cerveja> cervejas =  estoque.listarCervejas(pagina, TAMANHO_PAGINA);
+
 		return new Cervejas(cervejas);
 	}
 	
