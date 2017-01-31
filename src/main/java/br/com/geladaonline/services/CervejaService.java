@@ -1,8 +1,16 @@
 package br.com.geladaonline.services;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -13,6 +21,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -23,12 +32,18 @@ import br.com.geladaonline.model.Estoque;
 import br.com.geladaonline.model.rest.Cervejas;
 
 @Path("/cervejas")
-@Consumes({MediaType.APPLICATION_XML})
-@Produces({MediaType.APPLICATION_XML})
+@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 public class CervejaService {
 	
 	private static Estoque estoque = new Estoque();
 	private static final int TAMANHO_PAGINA = 2;
+	private static Map<String, String> EXTENSOES;
+	
+	static{
+		EXTENSOES = new HashMap<>();
+		EXTENSOES.put("image/jpg", ".jpg");
+	}
 	
 	@GET
 	public Cervejas listarTodasAsCervejas(@QueryParam("pagina") int pagina){
@@ -80,6 +95,39 @@ public class CervejaService {
 			e.printStackTrace();
 			throw new WebApplicationException(Status.NOT_FOUND);
 		} 
+	}
+	
+	@GET
+	@Path("{nome}")
+	@Produces("image/*")
+	public Response recuperarImagem(@PathParam("nome") String nomeCerveja) throws IOException{
+		InputStream is = CervejaService.class.getResourceAsStream("/"+ nomeCerveja +".jpg");
+		
+		if(is == null){
+			throw new WebApplicationException(Status.NOT_FOUND);
+		}
+		
+		byte[] dados = new byte[is.available()];
+		is.read(dados);
+		is.close();
+		
+		return Response.ok(dados).type("image/jpg").build();
+	}
+	
+	@POST
+	@Path("{nome}")
+	@Consumes("image/*")
+	public Response criarImagem(@PathParam("nome") String nomeImagem, @Context HttpServletRequest req, byte[] dados) 
+			throws IOException{
+		String userHome = System.getProperty("user.home");
+		String mimeType = req.getContentType();
+		
+		FileOutputStream fos = new FileOutputStream(userHome + File.separator + nomeImagem + EXTENSOES.get(mimeType));
+		fos.write(dados);
+		fos.flush();
+		fos.close();
+		
+		return Response.ok().build();
 	}
 
 }

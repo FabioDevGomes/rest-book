@@ -1,9 +1,13 @@
 package br.com.geladaonline.services;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ws.rs.core.Application;
+
+import org.glassfish.jersey.jettison.JettisonFeature;
 
 public class ApplicationJAXRS extends Application{
 
@@ -13,5 +17,15 @@ public class ApplicationJAXRS extends Application{
 		propriedades.put("jersey.config.server.provider.packages", "br.com.geladaonline.services");
 		return propriedades;
 	}
+
+	@Override
+	public Set<Object> getSingletons() {
+		Set<Object> singletons = new HashSet<>();
+		singletons.add(new JettisonFeature());
+		
+		return singletons;
+	}
+	
+	
 
 }
