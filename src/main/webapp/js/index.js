@@ -45,3 +45,21 @@ function adicionarNovaCervejaNaTabela(cerveja){
 			"</tr>";
 	$('#grid').append(dados);
 }
+
+function adicionarCerveja(){
+	var data = $("criarCervejaForm").serializeJSON();
+	data = "{\"cerveja\":"+ JSON.stringify(data) +"}";
+	$.ajax({
+		url : host + 'cervejas',
+		type : 'POST',
+		contentType : 'application/json',
+		data : data,
+		success : function(data) {
+			alert("Cerveja incluida com sucesso");
+			listarCervejas();
+		},
+		error : function() {
+			alert("Erro na inclusão da cerveja");
+		}
+	});
+}

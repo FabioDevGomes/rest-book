@@ -37,7 +37,7 @@ import br.com.geladaonline.model.rest.Cervejas;
 public class CervejaService {
 	
 	private static Estoque estoque = new Estoque();
-	private static final int TAMANHO_PAGINA = 2;
+	private static final int TAMANHO_PAGINA = 5;
 	private static Map<String, String> EXTENSOES;
 	
 	static{

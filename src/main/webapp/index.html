@@ -3,10 +3,33 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Cervejaria do Fábio</title>
 <script src="js/jquery-1.10.2.min.js"></script>
-<script src="js/jquery-1.10.2.min.js"></script>
 <script src="js/index.js"></script>
+<script src="js/json.js"></script>
 </head>
 <body>
+	<fieldset>
+		<legend>Criar nova cerveja</legend>
+		<form id="criarCervejaForm">
+			<label>Nome</label>
+			<input type="text" name="nome">
+			<br/>
+			<label>Cervejaria</label>
+			<input type="text" name="cervejaria">
+			<br/>
+			<label>Descrição</label>
+			<input type="text" name="descricao">
+			<br/>
+			<label>Tipo</label>
+			<select name=tipo>
+				<option value="LAGER" selected="selected">Lager</option>
+				<option value="PILSEN">Pilsen</option>
+				<option value="BOCK">Bock</option>
+				<option value="WEIZEN">Weizen</option>
+			</select>
+			<br/>
+			<input type="button" value="Criar" onclick="adicionarCerveja();">
+		</form>
+	</fieldset>
 	<fieldset>
 		<legend>Listagem de cervejas</legend>
 		<table id="grid">
