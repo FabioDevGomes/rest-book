@@ -16,8 +16,8 @@ public class Estoque {
 		Cerveja cerveja = new Cerveja("Stella Artois", "A cerveja belga mais franca do mundo", "Artois", Tipo.LAGER);
 		Cerveja cerveja2 = new Cerveja("Erdinger Wissbier", "Cerveja de trigo alemá", "Erdinger", Tipo.WEIZEN);
 		Cerveja cerveja3 = new Cerveja("Budweiser", "Cerveja mais top que há", "ambevi", Tipo.LAGER);
-		Cerveja cerveja4 = new Cerveja("Antartica", "Cerveja boa", "ambevi", Tipo.PILSEN);
-		Cerveja cerveja5 = new Cerveja("Skol", "Cerveja ruim na região de Goiânia", "indefinido", Tipo.WEIZEN);
+		Cerveja cerveja4 = new Cerveja("Antartica", "Cerveja boa", "AmBev‎", Tipo.PILSEN);
+		Cerveja cerveja5 = new Cerveja("Skol", "Cerveja ruim na região de Goiânia", "AmBev‎", Tipo.WEIZEN);
 		cervejas.put(cerveja.getNome(), cerveja);
 		cervejas.put(cerveja2.getNome(), cerveja2);
 		cervejas.put(cerveja3.getNome(), cerveja3);

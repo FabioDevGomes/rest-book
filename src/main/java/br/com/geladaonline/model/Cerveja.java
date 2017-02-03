@@ -10,17 +10,17 @@ public class Cerveja {
 	
 	public Cerveja(){}
 
-	public Cerveja(String nome, String descricao, String cevejaria, Tipo tipo) {
+	public Cerveja(String nome, String descricao, String cervejaria, Tipo tipo) {
 		super();
 		this.nome = nome;
 		this.descricao = descricao;
-		this.cevejaria = cevejaria;
+		this.cervejaria = cervejaria;
 		this.tipo = tipo;
 	}
 
 	private String nome;
 	private String descricao;
-	private String cevejaria;
+	private String cervejaria;
 	private Tipo tipo;
 	
 	public enum Tipo{
@@ -29,7 +29,7 @@ public class Cerveja {
 
 	@Override
 	public String toString() {
-		return "Cerveja [nome=" + nome + ", descricao=" + descricao + ", cevejaria=" + cevejaria + ", tipo=" + tipo
+		return "Cerveja [nome=" + nome + ", descricao=" + descricao + ", cevejaria=" + cervejaria + ", tipo=" + tipo
 				+ "]";
 	}
 
@@ -49,12 +49,12 @@ public class Cerveja {
 		this.descricao = descricao;
 	}
 
-	public String getCevejaria() {
-		return cevejaria;
+	public String getCervejaria() {
+		return cervejaria;
 	}
 
-	public void setCevejaria(String cevejaria) {
-		this.cevejaria = cevejaria;
+	public void setCervejaria(String cervejaria) {
+		this.cervejaria = cervejaria;
 	}
 
 	public Tipo getTipo() {
