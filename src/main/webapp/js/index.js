@@ -17,7 +17,7 @@ function listarCervejas() {
 			}
 		},
 		error : function() {
-			alert("erro na requisição");
+			alert("erro na listagem");
 		}
 	});
 }
@@ -41,13 +41,14 @@ function adicionarNovaCervejaNaTabela(cerveja){
 			"<td>"+ cerveja.cervejaria +"</td>" +
 			"<td>"+ cerveja.descricao +"</td>" +
 			"<td>"+ cerveja.tipo +"</td>" +
-			"<td><input type=\"button\" value=\"Apagar\"/></td>" +
+			"<td><input type=\"button\" value=\"Apagar\" " +
+			"onclick=\"apagarCerveja('"+ cerveja.nome +"');\" /></td>" +
 			"</tr>";
 	$('#grid').append(dados);
 }
 
 function adicionarCerveja(){
-	var data = $("criarCervejaForm").serializeJSON();
+	var data = $("#criarCervejaForm").serializeJSON();
 	data = "{\"cerveja\":"+ JSON.stringify(data) +"}";
 	$.ajax({
 		url : host + 'cervejas',
@@ -63,3 +64,18 @@ function adicionarCerveja(){
 		}
 	});
 }
+
+function apagarCerveja(id) {
+	$.ajax({
+		url : host + 'cervejas/' + id,
+		type : 'DELETE',
+		success : function(data) {
+			listarCervejas();
+		},
+		error : function() {
+			alert("Erro na tentativa de excluir uma cerveja");
+		}
+	});
+}
+
+
