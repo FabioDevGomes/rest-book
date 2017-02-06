@@ -16,8 +16,8 @@ function listarCervejas() {
 				seguirLink(link);
 			}
 		},
-		error : function() {
-			alert("erro na listagem");
+		error : function(data) {
+			alert("erro na listagem; "+data.status +" "+data.statusText);
 		}
 	});
 }
@@ -29,8 +29,8 @@ function seguirLink(link) {
 		success : function(data) {
 			adicionarNovaCervejaNaTabela(data.cerveja);
 		},
-		error : function() {
-			alert("Erro na tentativa de seguir o link");
+		error : function(data) {
+			alert("Erro na tentativa de seguir o link; "+data.status +" "+data.statusText);
 		}
 	});
 }
@@ -59,8 +59,8 @@ function adicionarCerveja(){
 			alert("Cerveja incluida com sucesso");
 			listarCervejas();
 		},
-		error : function() {
-			alert("Erro na inclusão da cerveja");
+		error : function(data) {
+			alert("Erro na inclusão da cerveja; "+data.status +" "+data.statusText);
 		}
 	});
 }
@@ -73,7 +73,7 @@ function apagarCerveja(id) {
 			listarCervejas();
 		},
 		error : function() {
-			alert("Erro na tentativa de excluir uma cerveja");
+			alert("Erro na tentativa de excluir uma cerveja; "+data.status +" "+data.statusText);
 		}
 	});
 }
