@@ -18,14 +18,12 @@
 			<artifactId>commons-io</artifactId>
 			<version>2.4</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.codehaus.jettison</groupId>
 			<artifactId>jettison</artifactId>
 			<version>1.3.4</version>
 			<scope>compile</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>org.glassfish.jersey.core</groupId>
 			<artifactId>jersey-server</artifactId>
@@ -45,8 +43,60 @@
 
 	<build>
 		<plugins>
+<!-- 			<plugin> -->
+<!-- 				<groupId>org.mortbay.jetty</groupId> -->
+<!-- 				<artifactId>jetty-maven-plugin</artifactId> -->
+<!-- 				<version>8.1.9.v20130131</version> -->
+<!-- 				<configuration> -->
+<!-- 					<scanIntervalSeconds>10</scanIntervalSeconds> -->
+<!-- 					<stopKey>foo</stopKey> -->
+<!-- 					<stopPort>9999</stopPort> -->
+<!-- 					<webApp> -->
+<!-- 						<contextPath>/rest</contextPath> -->
+<!-- 					</webApp> -->
+<!-- 					<loginServices> -->
+<!-- 						<loginService implementation="org.eclipse.jetty.security.HashLoginService"> -->
+<!-- 							<name>Default</name> -->
+<!-- 							<config>${basedir}/src/main/config/realm.properties</config> -->
+<!-- 						</loginService> -->
+<!-- 					</loginServices> -->
+<!-- 					<connectors> -->
+<!-- 						<connector implementation="org.eclipse.jetty.server.ssl.SslSocketConnector"> -->
+<!-- 							<port>8443</port> -->
+<!-- 							<maxIdleTime>60000</maxIdleTime> -->
+<!-- 							<keystore>${basedir}/src/main/config/server.keystore</keystore> -->
+<!-- 							<password>cervejaria</password> -->
+<!-- 							<keyPassword>cervejaria</keyPassword> -->
+<!-- 							<truststore>${basedir}/src/main/config/server.keystore</truststore> -->
+<!-- 							<trustPassword>cervejaria</trustPassword> -->
+<!-- 						</connector> -->
+<!-- 						<connector implementation="org.eclipse.jetty.server.nio.SelectChannelConnector"> -->
+<!-- 							<port>8080</port> -->
+<!-- 							<maxIdleTime>60000</maxIdleTime> -->
+<!-- 						</connector> -->
+<!-- 					</connectors> -->
+<!-- 				</configuration> -->
+<!-- 				<executions> -->
+<!-- 					<execution> -->
+<!-- 						<id>start-jetty</id> -->
+<!-- 						<phase>pre-integration-test</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>start</goal> -->
+<!-- 						</goals> -->
+<!-- 						<configuration> -->
+<!-- 							<scanIntervalSeconds>0</scanIntervalSeconds> -->
+<!-- 							<daemon>true</daemon> -->
+<!-- 						</configuration> -->
+<!-- 					</execution> -->
+<!-- 					<execution> -->
+<!-- 						<id>stop-jetty</id> -->
+<!-- 						<phase>post-integration-test</phase> -->
+<!-- 						<goals> -->
+<!-- 							<goal>stop</goal> -->
+<!-- 						</goals> -->
+<!-- 					</execution> -->
+<!-- 				</executions> -->
+<!-- 			</plugin> -->
 		</plugins>
 	</build>
-
-
 </project>

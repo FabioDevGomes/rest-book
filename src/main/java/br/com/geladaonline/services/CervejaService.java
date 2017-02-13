@@ -32,12 +32,12 @@ import br.com.geladaonline.model.Estoque;
 import br.com.geladaonline.model.rest.Cervejas;
 
 @Path("/cervejas")
-@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+@Consumes({MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+@Produces({MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 public class CervejaService {
 	
 	private static Estoque estoque = new Estoque();
-	private static final int TAMANHO_PAGINA = 5;
+	private static final int TAMANHO_PAGINA = 10;
 	private static Map<String, String> EXTENSOES;
 	
 	static{
