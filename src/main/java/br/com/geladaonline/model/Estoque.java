@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.core.MultivaluedMap;
+
 import br.com.geladaonline.model.Cerveja.Tipo;
 import br.com.geladaonline.services.CervejaJaExisteException;
 import br.com.geladaonline.services.CervejaNaoEcontradaException;
@@ -32,6 +34,14 @@ public class Estoque {
 	}
 	
 
+	public List<Cerveja> listarCervejasPorCampo(int numeroPagina, int tamanhoPagina, MultivaluedMap<String, String> queryMap){
+		List<Cerveja> resultaso = new ArrayList<>(tamanhoPagina);
+
+		
+		
+		return resultaso;
+	}
+	
 	public List<Cerveja> listarCervejas(int numeroPagina, int tamanhoPagina){
 		int indiceInicial = numeroPagina * tamanhoPagina;
 		int indiceFinal = indiceInicial + tamanhoPagina;

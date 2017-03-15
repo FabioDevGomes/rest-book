@@ -23,9 +23,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
+import javax.ws.rs.core.UriInfo;
 
 import br.com.geladaonline.model.Cerveja;
 import br.com.geladaonline.model.Estoque;
@@ -39,6 +41,8 @@ public class CervejaService {
 	private static Estoque estoque = new Estoque();
 	private static final int TAMANHO_PAGINA = 10;
 	private static Map<String, String> EXTENSOES;
+	@Context
+	private UriInfo uriInfo;
 	
 	static{
 		EXTENSOES = new HashMap<>();
@@ -47,7 +51,12 @@ public class CervejaService {
 	
 	@GET
 	public Cervejas listarTodasAsCervejas(@QueryParam("pagina") int pagina){
+		
+		MultivaluedMap<String, String> queryMap = uriInfo.getQueryParameters();
+		
 		List<Cerveja> cervejas =  estoque.listarCervejas(pagina, TAMANHO_PAGINA);
+		
+//		List<Cerveja> cervejas =  estoque.listarCervejas(pagina, TAMANHO_PAGINA);
 
 		return new Cervejas(cervejas);
 	}

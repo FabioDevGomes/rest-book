@@ -26,6 +26,56 @@ public class Cerveja {
 	public enum Tipo{
 		LAGER, PILSEN, PALE_ALE, INDIAN_PALE_ALE, WEIZEN;
 	}
+	
+	public static Builder builder(){
+		return new Builder();
+	}
+	
+	public static class Builder{
+		private Cerveja building;
+		
+		public Builder(){
+			building = new Cerveja();
+			building.nome = "";
+			building.descricao = "";
+			building.cervejaria = "";
+			building.tipo = null;
+		}
+		
+		public Builder comNome(String nome){
+			building.nome = nome;
+			return this;
+		}
+
+		public Builder comDescricao(String descricao){
+			building.descricao = descricao;
+			return this;
+		}
+		
+		public Builder comCervejaria(String cervejaria){
+			building.cervejaria = cervejaria;
+			return this;
+		}
+		
+		public Builder comTipo(Tipo tipo){
+			building.tipo = tipo;
+			return this;
+		}
+		
+		public Builder comTipo(String tipo){
+			if(tipo == null && tipo.trim().equals("")){
+				return this;
+			}
+			building.tipo = Tipo.valueOf(tipo);
+			return this;
+		}
+		
+		public Cerveja build(){
+			return building;
+		}
+		
+	}
+	
 
 	@Override
 	public String toString() {
