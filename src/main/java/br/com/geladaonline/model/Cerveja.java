@@ -1,5 +1,7 @@
 package br.com.geladaonline.model;
 
+import java.util.regex.Pattern;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -63,7 +65,7 @@ public class Cerveja {
 		}
 		
 		public Builder comTipo(String tipo){
-			if(tipo == null && tipo.trim().equals("")){
+			if(tipo == null || tipo.trim().equals("")){
 				return this;
 			}
 			building.tipo = Tipo.valueOf(tipo);
@@ -74,6 +76,23 @@ public class Cerveja {
 			return building;
 		}
 		
+	}
+	
+	public boolean matchExemplo(Cerveja cerveja){
+		boolean match = true;
+		match &= matchRegex(cerveja.nome, this.nome);
+		match &= matchRegex(cerveja.descricao, this.descricao);
+		match &= matchRegex(cerveja.cervejaria, this.cervejaria);
+		match &= this.tipo != null ? matchRegex(cerveja.tipo.name(), this.tipo.name()) : true;
+		
+		return match;
+	}
+	
+	private boolean matchRegex(String toCompare, String source){
+		if(source != null){
+			return Pattern.compile(source).matcher(toCompare).find();
+		}
+		return true;
 	}
 	
 

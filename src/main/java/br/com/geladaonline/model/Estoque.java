@@ -35,18 +35,32 @@ public class Estoque {
 	
 
 	public List<Cerveja> listarCervejasPorCampo(int numeroPagina, int tamanhoPagina, MultivaluedMap<String, String> queryMap){
-		List<Cerveja> resultaso = new ArrayList<>(tamanhoPagina);
+		List<Cerveja> resultados = new ArrayList<>(tamanhoPagina);
 
+		Cerveja exemplo = Cerveja.builder().comNome(queryMap.getFirst("nome"))
+				.comDescricao(queryMap.getFirst("descricao"))
+				.comCervejaria(queryMap.getFirst("cervejaria"))
+				.comTipo(queryMap.getFirst("tipo")).build();
 		
+		for(Cerveja cerveja : listarCervejas()){
+			if(exemplo.matchExemplo(cerveja)){
+				resultados.add(cerveja);
+			}
+		}
 		
-		return resultaso;
+		return filtrarPaginacao(numeroPagina, tamanhoPagina, resultados);
 	}
 	
 	public List<Cerveja> listarCervejas(int numeroPagina, int tamanhoPagina){
-		int indiceInicial = numeroPagina * tamanhoPagina;
-		int indiceFinal = indiceInicial + tamanhoPagina;
-		
 		List<Cerveja> cervejas = listarCervejas();
+		cervejas = filtrarPaginacao(numeroPagina, tamanhoPagina, cervejas);
+		
+		return cervejas;
+	}
+
+	private List<Cerveja> filtrarPaginacao(int numeroPagina, int tamanhoPagina, List<Cerveja> cervejas) {
+		int indiceInicial = numeroPagina * tamanhoPagina; //inicia na página 0
+		int indiceFinal = indiceInicial + tamanhoPagina;
 		
 		if(cervejas.size() > indiceInicial){
 			if(cervejas.size() > indiceFinal){
@@ -57,7 +71,6 @@ public class Estoque {
 		}else{
 			cervejas = new ArrayList<>();
 		}
-		
 		return cervejas;
 	}
 	

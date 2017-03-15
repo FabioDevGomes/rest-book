@@ -54,7 +54,7 @@ public class CervejaService {
 		
 		MultivaluedMap<String, String> queryMap = uriInfo.getQueryParameters();
 		
-		List<Cerveja> cervejas =  estoque.listarCervejas(pagina, TAMANHO_PAGINA);
+		List<Cerveja> cervejas =  estoque.listarCervejasPorCampo(pagina, TAMANHO_PAGINA, queryMap);
 		
 //		List<Cerveja> cervejas =  estoque.listarCervejas(pagina, TAMANHO_PAGINA);
 
