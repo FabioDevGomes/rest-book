@@ -2,6 +2,7 @@ package br.com.geladaonline.services.validacao;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.HEAD;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -26,5 +27,13 @@ public class ValidacaoService {
 					.entity("CPF inválido de acordo com o algoritmo" + algoritmoValidacao.getNomeAlgoritmo()).build());
 		}
 		return "CPF Válido";
+	}
+	
+	@Path("/cpf/{valor}")
+	@HEAD
+	public Response validarCPFSemResultado(@PathParam("valor") String cpf,
+			@QueryParam("algoritmo") AlgoritmoValidacao algoritmoValidacao) {
+		validarCPF(cpf, algoritmoValidacao);
+		return Response.ok().build();
 	}
 }
