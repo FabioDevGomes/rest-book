@@ -1,6 +1,7 @@
 package br.com.geladaonline.services.validacao;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.HEAD;
 import javax.ws.rs.Path;
@@ -32,7 +33,7 @@ public class ValidacaoService {
 	@Path("/cpf/{valor}")
 	@HEAD
 	public Response validarCPFSemResultado(@PathParam("valor") String cpf,
-			@QueryParam("algoritmo") AlgoritmoValidacao algoritmoValidacao) {
+			@QueryParam("algoritmo") @DefaultValue("TODOS") AlgoritmoValidacao algoritmoValidacao) {
 		validarCPF(cpf, algoritmoValidacao);
 		return Response.ok().build();
 	}
