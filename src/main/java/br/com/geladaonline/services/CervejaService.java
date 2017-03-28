@@ -29,6 +29,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 
+import br.com.geladaonline.cache.Cached;
 import br.com.geladaonline.model.Cerveja;
 import br.com.geladaonline.model.Estoque;
 import br.com.geladaonline.model.rest.Cervejas;
@@ -36,6 +37,7 @@ import br.com.geladaonline.model.rest.Cervejas;
 @Path("/cervejas")
 @Consumes({MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Produces({MediaType.TEXT_XML, MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+@Cached
 public class CervejaService {
 	
 	private static Estoque estoque = new Estoque();

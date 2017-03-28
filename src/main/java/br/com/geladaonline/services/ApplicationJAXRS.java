@@ -9,6 +9,8 @@ import javax.ws.rs.core.Application;
 
 import org.glassfish.jersey.jettison.JettisonFeature;
 
+import br.com.geladaonline.cache.CacheInterceptor;
+
 public class ApplicationJAXRS extends Application{
 
 	@Override
@@ -23,6 +25,7 @@ public class ApplicationJAXRS extends Application{
 	public Set<Object> getSingletons() {
 		Set<Object> singletons = new HashSet<>();
 		singletons.add(new JettisonFeature());
+		singletons.add(new CacheInterceptor());
 		
 		return singletons;
 	}
