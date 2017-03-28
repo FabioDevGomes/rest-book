@@ -3,6 +3,7 @@ package br.com.geladaonline.cache;
 import java.lang.ref.SoftReference;
 import java.util.Date;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class EntityCache {
@@ -16,9 +17,10 @@ public class EntityCache {
 	}
 	
 	public void put(String path, Object entity){
+//		TimeZone.setDefault(TimeZone.getTimeZone("BRT"));
 		EntityDatePair pair = new EntityDatePair(entity, new Date());
 		SoftReference<EntityDatePair> sr = new SoftReference<EntityDatePair>(pair);
-		this.put(path, sr);
+		this.objectCached.put(path, sr);
 	}
 	
 	public boolean isUpdated(String path, Date since){
