@@ -112,17 +112,20 @@ public class CervejaService {
 	@Path("{nome}")
 	@Produces("image/*")
 	public Response recuperarImagem(@PathParam("nome") String nomeCerveja) throws IOException{
-		InputStream is = CervejaService.class.getResourceAsStream("/"+ nomeCerveja +".jpg");
+//		InputStream is = CervejaService.class.getResourceAsStream("/"+ nomeCerveja +".jpg");
 		
-		if(is == null){
-			throw new WebApplicationException(Status.NOT_FOUND);
-		}
+		Cerveja cerveja = new Cerveja();
+		cerveja.setNome(nomeCerveja);
 		
-		byte[] dados = new byte[is.available()];
-		is.read(dados);
-		is.close();
-		
-		return Response.ok(dados).type("image/jpg").build();
+//		if(is == null){
+//			throw new WebApplicationException(Status.NOT_FOUND);
+//		}
+//		
+//		byte[] dados = new byte[is.available()];
+//		is.read(dados);
+//		is.close();
+
+		return Response.ok(cerveja).type("image/jpg").build();
 	}
 	
 	@POST
